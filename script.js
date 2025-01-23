@@ -1,3 +1,15 @@
+let rockBtn = document.querySelector("#rock-btn");
+let paperBtn = document.querySelector("#paper-btn");
+let scisorBtn = document.querySelector("#scisor-btn");
+
+rockBtn.addEventListener("click", playRound);
+paperBtn.addEventListener("click", playRound);
+scisorBtn.addEventListener("click", playRound);
+
+let selections = document.querySelector("#selections");
+let winnerField = document.querySelector("#winner-field");
+let scoreDisplay = document.querySelector("#score-display");
+
 function getComputerChoice() {
     let randomNumber = Math.random();
     console.log(randomNumber);
@@ -12,82 +24,53 @@ function getComputerChoice() {
     }
 }
 
-function getHumanChoice() {
-    let humanChoice = prompt("Choose between 'Rock', 'Paper' and 'Scisor'").toLowerCase();
-    if (humanChoice == "rock" || humanChoice == "paper" || humanChoice == "scisor") {
-        return humanChoice;
-    }
-    else {
-        console.log("You entered an invalid input. Please read the instructions correctly")
-        getHumanChoice();
-    }
+function getHumanChoice(e) {
+    return e.target.textContent.toLowerCase();
 }
 
-function playGame() {
+function playRound(e) {
+    let computerChoice = getComputerChoice();
+    let humanChoice = getHumanChoice(e);
 
-    let humanScore = 0;
-    let computerScore = 0;
-    
-    for (let i = 0; i < 5; i++) {
-        playRound(getComputerChoice(), getHumanChoice());
-    }
-    console.log("Now printing humanScore"); 
-    console.log(humanScore);
-    console.log("Now printing computerScore");
-    console.log(computerScore);
+    selections.textContent = `Player choose ${humanChoice}, computer choose ${computerChoice}`;
 
-    function playRound(computerChoice, humanChoice) {
-        console.log(computerChoice);
-        if (computerChoice == "rock") {
-            if (humanChoice == "scisor") {
-                console.log("Computer wins, Rock beats Scisor.");
-                computerScore++; 
-            }
-            else if (humanChoice == "rock") {
-                console.log("It's a draw. Both players used Rock.");
-            }
-            else {
-                console.log("You win! Paper beats rock.")
-                humanScore++;
-            }
+    let winnerFieldDisplay1 = "Computer wins!";
+    let winnerFieldDisplay2 = "Player wins!";
+    let winnerFieldDisplay3 = "It's a draw!";
+
+    if (computerChoice == "rock") {
+        if (humanChoice == "scisor") {
+            winnerField.textContent = winnerFieldDisplay1;
         }
-        if (computerChoice == "paper") {
-            if (humanChoice == "scisor") {
-                console.log("You win! Scisor beats Paper.");
-                humanScore++;
-            }
-            else if (humanChoice == "rock") {
-                console.log("Computer wins, Paper beats Rock");
-                computerScore++;
-            }
-            else {
-                console.log("It's a draw. Both players used Paper.");
-            }
+        else if (humanChoice == "rock") {
+            winnerField.textContent = winnerFieldDisplay3;
         }
-        if (computerChoice == "scisor") {
-            if (humanChoice == "scisor") {
-                console.log("It's a draw. Both players used Scisor.");
-            }
-            else if (humanChoice == "rock") {
-                console.log("You win, Rock beats Scisor");
-                humanScore++;
-            }
-            else {
-                console.log("Computer wins, scisor beats paper");
-                computerScore++
-            }
+        else {
+            winnerField.textContent = winnerFieldDisplay2;
         }
-        return 
     }
-    if (humanScore > computerScore) {
-        return `Human scored: ${humanScore} agaisn't computer, which scored: ${computerScore}. Human wins`;
+    if (computerChoice == "paper") {
+        if (humanChoice == "scisor") {
+            winnerField.textContent = winnerFieldDisplay2;
+        }
+        else if (humanChoice == "rock") {
+            winnerField.textContent = winnerFieldDisplay1;
+        }
+        else {
+            winnerField.textContent = winnerFieldDisplay3;
+        }
     }
-    else if (humanScore < computerScore) {
-        return `Computer scored: ${computerScore} agaisn't human, who scored: ${humanScore}. Computer wins`;
+    if (computerChoice == "scisor") {
+        if (humanChoice == "scisor") {
+            winnerField.textContent = winnerFieldDisplay3;
+        }
+        else if (humanChoice == "rock") {
+            winnerField.textContent = winnerFieldDisplay2;
+        }
+        else {
+            winnerField.textContent = winnerFieldDisplay1;
+        }
     }
-    else {
-        return `It's a draw! Both players scored ${humanScore}`;
-    }
+    return
 }
 
-console.log(playGame());
